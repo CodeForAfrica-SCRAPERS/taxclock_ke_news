@@ -5,7 +5,7 @@
 # Custom version of scraperwiki library
 -e git+http://github.com/openaustralia/scraperwiki-python.git@morph_defaults#egg=scraperwiki
 
-bs4==4.5.3
+beautifulsoup4==4.5.3
 requests==2.13.0
 boto3==1.4.4
 json==2.0.9
