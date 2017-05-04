@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import os
 import boto3
+import json
 
 s3 = boto3.client(
     's3',
@@ -41,3 +42,5 @@ s3.put_object(
     Key='data/standard-news.json',
     Body=json.dumps(data)
 )
+
+print("ok")
