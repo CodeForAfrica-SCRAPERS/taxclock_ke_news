@@ -1,24 +1,46 @@
-# This is a template for a Python scraper on morph.io (https://morph.io)
-# including some code snippets below that you should find helpful
+from bs4 import BeautifulSoup
+import requests
+import os
+import boto3
+import json
 
-# import scraperwiki
-# import lxml.html
-#
-# # Read in a page
-# html = scraperwiki.scrape("http://foo.com")
-#
-# # Find something on the page using css selectors
-# root = lxml.html.fromstring(html)
-# root.cssselect("div[align='left']")
-#
-# # Write out to the sqlite database using scraperwiki library
-# scraperwiki.sqlite.save(unique_keys=['name'], data={"name": "susan", "occupation": "software developer"})
-#
-# # An arbitrary query against the database
-# scraperwiki.sql.select("* from data where 'name'='peter'")
+s3 = boto3.client(
+    's3',
+    aws_access_key_id=os.environ['MORPH_AWS_ACCESS_KEY'],
+    aws_secret_access_key=os.environ['MORPH_AWS_SECRET_KEY'],
+    region_name='eu-west-1'
+)
 
-# You don't have to do things with the ScraperWiki and lxml libraries.
-# You can use whatever libraries you want: https://morph.io/documentation/python
-# All that matters is that your final data is written to an SQLite database
-# called "data.sqlite" in the current working directory which has at least a table
-# called "data".
+res = requests.get("https://www.standardmedia.co.ke/business/category/19/business-news")
+
+raw = res.content
+
+html = BeautifulSoup(raw, 'html.parser')
+
+data = []
+
+base_url = "https://www.standardmedia.co.ke"
+
+ul = html.find("ul", class_="business-lhs")
+
+items = ul.find_all("div", class_="col-xs-6")
+
+for item in items:
+    img_src = item.find("img").get("src")
+    img_url = base_url+img_src
+    text = item.find("h4").text
+    link = item.find("h4").find("a").get("href")
+    data.append({
+        'title':text,
+        'link':link,
+        'img':img_url
+        })
+
+s3.put_object(
+    Bucket='taxclock.codeforkenya.org',
+    ACL='public-read',
+    Key='data/standard-news.json',
+    Body=json.dumps(data)
+)
+
+print("ok")
