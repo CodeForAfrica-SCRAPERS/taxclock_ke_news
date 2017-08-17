@@ -13,7 +13,7 @@ s3 = boto3.client(
 )
 
 try:
-    res = requests.get("`y/19/business-news")
+    res = requests.get("https://www.standardmedia.co.ke/business/category/19/business-news")
     raw = res.content
     html = BeautifulSoup(raw, 'html.parser')
     data = []
