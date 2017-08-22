@@ -49,20 +49,21 @@ class Scraper(object):
 			items = ul.find_all("div", class_="col-xs-6")
 			for item in items:
 				img_src = item.find("img").get("src")
-				img_url = base_url+img_src
+				img_url = base_url + img_src
 				text = item.find("h4").text
 				link = item.find("h4").find("a").get("href")
-			data.append({
-				'title':text,
-				'link':link,
-				'img':img_url
-				})
+				data.append({
+			    	'title':text,
+				    'link':link,
+				    'img':img_url
+				  })
+			print (json.dumps(data, indent=2))    
 			self.s3.put_object(
 				Bucket='taxclock.codeforkenya.org',
 				ACL='public-read',
 				Key='data/standard-news.json',
 				Body=json.dumps(data))
-			print ("ok")
+			
 		else:
-			print "Site has no content to display."	
+			print result_html	
 

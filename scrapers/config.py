@@ -7,7 +7,7 @@ scrap_sites = {
 	"standard":"https://www.standardmedia.co.ke/business/category/19/business-news",
 	"nation":"http://www.nation.co.ke/business/996-996-x0uutpz/index.html",
 	"the_star":"http://www.the-star.co.ke/sections/business_c29663",
-	"capital":"http://www.capitalfm.co.ke"
+	"capital":"http://www.capitalfm.co.ke/business/section/kenya/"
 	
 }
 
