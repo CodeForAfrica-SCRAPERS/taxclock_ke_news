@@ -21,7 +21,8 @@ class CapitalMedia(Scraper):
             for item in items:
                 img_url = item.find("img").get("src")
                 if not img_url:
-                    img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
+                    img_url = "https://github.com/CodeForAfrica/\
+                    TaxClock/blob/kenya/img/placeholder.png"
                 link = item.find("a").get("href")
                 text = item.find("h2").text
                 data.append({

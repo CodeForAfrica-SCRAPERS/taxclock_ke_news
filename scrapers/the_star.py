@@ -23,7 +23,8 @@ class StarMedia(Scraper):
             for item in items:
                 img_url = item.find("img").get("src")
                 if not img_url:
-                    img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
+                    img_url = "https://github.com/CodeForAfrica/\
+                    TaxClock/blob/kenya/img/placeholder.png"
                 text = item.find("img").get("title")
                 link = base_urls["the_star"] + item.find("a").get("href")
                 data.append({

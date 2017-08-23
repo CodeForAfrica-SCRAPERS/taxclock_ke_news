@@ -11,10 +11,12 @@ from time import gmtime, strftime
 
 from .config import AWS
 
+
 class Scraper(object):
     """
     This is a base class inherited by other scraper classes.
     """
+
     def __init__(self):
         self.url = None
         self.s3 = boto3.client("s3", **{
@@ -51,7 +53,8 @@ class Scraper(object):
                 img_src = item.find("img").get("src")
                 img_url = base_url + img_src
                 if not img_url:
-                    img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
+                    img_url = "https://github.com/CodeForAfrica/\
+                    TaxClock/blob/kenya/img/placeholder.png"
                 text = item.find("h4").text
                 link = item.find("h4").find("a").get("href")
                 data.append({
