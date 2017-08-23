@@ -14,16 +14,15 @@ class NationMedia(Scraper):
         """this method scrapes data from\
         http://www.nation.co.ke/business/corporates/\
         1954162-1954162-u0riql/index.html"""
-        
+
         result_html = self.base.get_html_content(self.url)
         if result_html:
             data = []
             items = result_html.find_all(
-                "li", class_="story-teaser tiny-teaser")
-            print(items)
+                "div", class_="story-teaser medium-teaser")
             for item in items:
                 img_url = base_urls["nation"] + item.find("img").get("src")
-                link = item.find("a").get("href")
+                link = base_urls["nation"] + item.find("a").get("href")
                 text = item.find("img").get("alt")
                 data.append({
                     'link': link,
