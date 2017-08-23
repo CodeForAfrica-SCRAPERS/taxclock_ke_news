@@ -9,7 +9,7 @@ class ConfigTest(unittest.TestCase):
     def test_sites_url(self):
         """Tests whether all the\
         site url's are working."""
-        
+
         for keys in scrap_sites.keys():
             resp = requests.get(scrap_sites[keys])
         self.assertEqual(resp.status_code, 200)

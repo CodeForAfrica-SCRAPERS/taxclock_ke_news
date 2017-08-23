@@ -11,12 +11,10 @@ from time import gmtime, strftime
 
 from .config import AWS
 
-
 class Scraper(object):
     """
     This is a base class inherited by other scraper classes.
     """
-
     def __init__(self):
         self.url = None
         self.s3 = boto3.client("s3", **{
@@ -26,7 +24,8 @@ class Scraper(object):
         })
 
     def get_html_content(self, url):
-        """This method returns the entire html content of a page."""
+        """This method returns the entire\
+         html content of a page."""
 
         try:
             res = requests.get(url)
@@ -43,7 +42,6 @@ class Scraper(object):
         the website url's that are passed to it.In 
         this case the standard media urls'.
         """
-
         result_html = self.get_html_content(url)
         data = []
         if result_html:
@@ -52,6 +50,8 @@ class Scraper(object):
             for item in items:
                 img_src = item.find("img").get("src")
                 img_url = base_url + img_src
+                if not img_url:
+                    img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
                 text = item.find("h4").text
                 link = item.find("h4").find("a").get("href")
                 data.append({
@@ -65,6 +65,6 @@ class Scraper(object):
                 ACL='public-read',
                 Key='data/standard-news.json',
                 Body=json.dumps(data))
-
+            return result_html
         else:
             print "The ideal html content could not be retrieved."

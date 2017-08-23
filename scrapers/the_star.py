@@ -22,6 +22,8 @@ class StarMedia(Scraper):
                 "div", class_="field field-name-field-converge-image")
             for item in items:
                 img_url = item.find("img").get("src")
+                if not img_url:
+                    img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
                 text = item.find("img").get("title")
                 link = base_urls["the_star"] + item.find("a").get("href")
                 data.append({
@@ -36,5 +38,6 @@ class StarMedia(Scraper):
                 Key='data/standard-news.json',
                 Body=json.dumps(data)
             )
+            return result_html
         else:
             print "The ideal html content could not be retrieved."

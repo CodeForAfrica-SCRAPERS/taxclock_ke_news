@@ -11,16 +11,17 @@ class CapitalMedia(Scraper):
         self.base = Scraper()
 
     def scrape_page(self):
-        """this method scrapes data from capitalfm site\
+        """This method scrapes data from capitalfm site\
         http://www.capitalfm.co.ke/business/section/kenya/
         """
         result_html = self.base.get_html_content(self.url)
         if result_html:
             data = []
             items = result_html.find_all("div", class_="article-wrapper")
-            print(items)
             for item in items:
                 img_url = item.find("img").get("src")
+                if not img_url:
+                    img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
                 link = item.find("a").get("href")
                 text = item.find("h2").text
                 data.append({
@@ -35,5 +36,6 @@ class CapitalMedia(Scraper):
                 Key='data/standard-news.json',
                 Body=json.dumps(data)
             )
+            return result_html
         else:
             print "The ideal html content could not be retrieved."
