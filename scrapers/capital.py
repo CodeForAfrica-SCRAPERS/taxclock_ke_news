@@ -11,6 +11,9 @@ class CapitalMedia(Scraper):
         self.base = Scraper()
 
     def scrape_page(self):
+        """this method scrapes data from capitalfm site\
+        http://www.capitalfm.co.ke/business/section/kenya/
+        """
         result_html = self.base.get_html_content(self.url)
         if result_html:
             data = []

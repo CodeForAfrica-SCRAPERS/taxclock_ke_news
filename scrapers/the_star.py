@@ -12,6 +12,9 @@ class StarMedia(Scraper):
         self.base = Scraper()
 
     def scrape_page(self):
+        """this method scrapes data from\
+        http://www.the-star.co.ke/sections/business_c29663
+        """
         result_html = self.base.get_html_content(self.url)
         if result_html:
             data = []

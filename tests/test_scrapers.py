@@ -11,6 +11,7 @@ class ScraperTest(object):
     def setUp(self):
         """this method instantiates all objects\
          before each test is run."""
+
         self.scraper = Scraper()
         self.capital = CapitalMedia()
         self.nation = NationMedia()
@@ -19,11 +20,13 @@ class ScraperTest(object):
     def test_get_html_content(self):
         """this method tests that the get\
          html content works well."""
+
         self.assertContains(self.scraper.test_get_html_content(
             scrape_sites["standard"]), "business-lhs")
 
     def test_scrapers(self):
         """this method tests the site scrapers."""
+
         self.assertContains(self.capital.scrape_page(),
                             "article-wrapper")
         self.assertContains(self.nation.scrape_page(),
@@ -34,6 +37,7 @@ class ScraperTest(object):
     def tearDown(self):
         """this destroys all objects\
         after each test is run."""
+        
         del self.scraper
         del self.capital
         del self.nation

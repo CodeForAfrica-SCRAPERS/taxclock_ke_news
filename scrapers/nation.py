@@ -11,6 +11,10 @@ class NationMedia(Scraper):
         self.base = Scraper()
 
     def scrape_page(self):
+        """this method scrapes data from\
+        http://www.nation.co.ke/business/corporates/\
+        1954162-1954162-u0riql/index.html"""
+        
         result_html = self.base.get_html_content(self.url)
         if result_html:
             data = []

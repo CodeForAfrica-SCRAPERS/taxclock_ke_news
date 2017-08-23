@@ -40,7 +40,9 @@ class Scraper(object):
 
     def scrape(self, url, base_url):
         """This method is used as a sraper for 
-        the website url's that are passed from it."""
+        the website url's that are passed to it.In 
+        this case the standard media urls'.
+        """
 
         result_html = self.get_html_content(url)
         data = []
