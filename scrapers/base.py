@@ -65,4 +65,4 @@ class Scraper(object):
                 Body=json.dumps(data))
 
         else:
-            print result_html
+            print "The ideal html content could not be retrieved."
