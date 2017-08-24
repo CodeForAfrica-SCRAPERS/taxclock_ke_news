@@ -11,6 +11,8 @@ from time import gmtime, strftime
 
 from .config import AWS
 
+log = logging.getLogger(__name__)
+
 
 class Scraper(object):
     """
@@ -37,7 +39,7 @@ class Scraper(object):
         except Exception as err:
             print "Url is not reachable. Error logged on: {}".format(
                 strftime("%Y-%m-%d %H:%M:%S", gmtime()))
-            logging.exception(str(err))
+            log.info(str(err))
 
     def scrape(self, url, base_url):
         """This method is used as a sraper for 
@@ -51,10 +53,9 @@ class Scraper(object):
             items = ul.find_all("div", class_="col-xs-6")
             for item in items:
                 img_src = item.find("img").get("src")
-                img_url = base_url + img_src
-                if not img_url:
-                    img_url = "https://github.com/CodeForAfrica/\
-                    TaxClock/blob/kenya/img/placeholder.png"
+                if img_src:
+                    img_url = base_url + img_src
+                img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
                 text = item.find("h4").text
                 link = item.find("h4").find("a").get("href")
                 data.append({

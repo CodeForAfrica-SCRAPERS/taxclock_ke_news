@@ -21,10 +21,10 @@ class NationMedia(Scraper):
             items = result_html.find_all(
                 "div", class_="story-teaser medium-teaser")
             for item in items:
-                img_url = base_urls["nation"] + item.find("img").get("src")
-                if not img_url:
-                    img_url = "https://github.com/CodeForAfrica/\
-                    TaxClock/blob/kenya/img/placeholder.png"
+                img_src = item.find("img").get("src")
+                if img_src:
+                    img_url = base_urls["nation"] + img_src
+                img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
                 link = base_urls["nation"] + item.find("a").get("href")
                 text = item.find("img").get("alt")
                 data.append({

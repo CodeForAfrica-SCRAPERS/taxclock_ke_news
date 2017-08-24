@@ -15,7 +15,14 @@ class StarMedia(Scraper):
         """this method scrapes data from\
         http://www.the-star.co.ke/sections/business_c29663
         """
-        result_html = self.base.get_html_content(self.url)
+        urls = []
+        if self.pagination():
+            urls = self.pagination()
+            for url in urls:
+                result_html = self.base.get_html_content(url)
+            result_html
+        else:
+            result_html = self.base.get_html_content(self.url)
         if result_html:
             data = []
             items = result_html.find_all(
@@ -23,8 +30,7 @@ class StarMedia(Scraper):
             for item in items:
                 img_url = item.find("img").get("src")
                 if not img_url:
-                    img_url = "https://github.com/CodeForAfrica/\
-                    TaxClock/blob/kenya/img/placeholder.png"
+                    img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
                 text = item.find("img").get("title")
                 link = base_urls["the_star"] + item.find("a").get("href")
                 data.append({
@@ -42,3 +48,18 @@ class StarMedia(Scraper):
             return result_html
         else:
             print "The ideal html content could not be retrieved."
+
+    def pagination(self):
+        """this method gets the urls for the pages\
+         in the star website. It returns the urls\
+          for the pages"""
+
+        result_html = self.base.get_html_content(self.url)
+        if result_html:
+            ul = result_html.find("ul", class_="pager")
+            items = ul.find_all("li", class_="pager__item")
+            urls = []
+            for links in items[1:]:
+                link = base_urls["the_star"] + links.find("a").get("href")
+                urls.append(link)
+            return urls
