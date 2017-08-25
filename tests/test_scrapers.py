@@ -11,7 +11,7 @@ from .. scrapers.the_star import StarMedia
 class ScraperTest(unittest.TestCase):
 
     def setUp(self):
-        """this method instantiates all objects\
+        """This method instantiates all objects\
          before each test is run."""
 
         self.scraper = Scraper()
@@ -20,7 +20,7 @@ class ScraperTest(unittest.TestCase):
         self.the_star = StarMedia()
 
     def test_get_html_content(self):
-        """this method tests that the get\
+        """This method tests that the get\
          html content works well."""
 
         result_html = self.scraper.get_html_content(
@@ -29,7 +29,7 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(data)
 
     def test_nationmedia_scraper(self):
-        """this method tests the scraper\
+        """This method tests the scraper\
         for nation media."""
 
         result_html = self.scraper.get_html_content(
@@ -39,7 +39,7 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(items)
 
     def test_standardmedia_scraper(self):
-        """this method tests the scraper\
+        """This method tests the scraper\
         for standard media."""
 
         result_html = self.scraper.get_html_content(
@@ -49,7 +49,7 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(items)
 
     def test_the_star_scraper(self):
-        """this method tests the scraper\
+        """This method tests the scraper\
         for the star."""
 
         result_html = self.scraper.get_html_content(
@@ -59,7 +59,7 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(items)
 
     def test_capitalfm(self):
-        """this method tests the scraper\
+        """This method tests the scraper\
         for capitalfm."""
 
         result_html = self.scraper.get_html_content(
@@ -67,8 +67,13 @@ class ScraperTest(unittest.TestCase):
         items = result_html.find_all("div", class_="article-wrapper")
         self.assertTrue(items)
 
+    def test_pagination(self):
+        """Tests that the page has pagination."""
+        urls = self.the_star.pagination()
+        self.assertTrue(urls)
+
     def tearDown(self):
-        """this destroys all objects\
+        """This destroys all objects\
         after each test is run."""
 
         del self.scraper

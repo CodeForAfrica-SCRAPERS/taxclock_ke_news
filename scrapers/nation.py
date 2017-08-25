@@ -1,7 +1,10 @@
 import json
+import logging
 
 from .base import Scraper
 from .config import scrape_sites, base_urls
+
+log = logging.getLogger(__name__)
 
 
 class NationMedia(Scraper):
@@ -41,4 +44,4 @@ class NationMedia(Scraper):
             )
             return result_html
         else:
-            print "The ideal html content could not be retrieved."
+            log.info("The ideal html content could not be retrieved.")

@@ -1,7 +1,10 @@
 import json
+import logging
 
 from .base import Scraper
 from .config import scrape_sites, base_urls
+
+log = logging.getLogger(__name__)
 
 
 class StarMedia(Scraper):
@@ -47,7 +50,7 @@ class StarMedia(Scraper):
             )
             return result_html
         else:
-            print "The ideal html content could not be retrieved."
+            log.info("The ideal html content could not be retrieved.")
 
     def pagination(self):
         """this method gets the urls for the pages\
