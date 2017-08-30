@@ -1,7 +1,6 @@
 import boto3
 import json
 import logging
-import os
 import requests
 
 
@@ -42,8 +41,9 @@ class Scraper(object):
             log.info(str(err))
 
     def scrape(self, url, base_url):
-        """This method is used as a sraper for 
-        the website url's that are passed to it.In 
+        """
+        This method is used as a sraper for\
+        the website url's that are passed to it.In\
         this case the standard media urls'.
         """
         result_html = self.get_html_content(url)

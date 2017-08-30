@@ -1,8 +1,7 @@
 import unittest
 
-
 from .. scrapers.base import Scraper
-from .. scrapers.config import scrape_sites, base_urls
+from .. scrapers.config import scrape_sites
 from .. scrapers.capital import CapitalMedia
 from .. scrapers.nation import NationMedia
 from .. scrapers.the_star import StarMedia

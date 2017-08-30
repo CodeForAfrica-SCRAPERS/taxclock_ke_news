@@ -8,7 +8,7 @@ from scrapers.nation import NationMedia
  This file contains the instances\
   of the scraper classes
  It's the entry point\
-  to all scraping. 
+ to all scraping.
 '''
 
 '''

@@ -2,7 +2,7 @@ import json
 import logging
 
 from .base import Scraper
-from .config import scrape_sites, base_urls
+from .config import scrape_sites
 
 
 log = logging.getLogger(__name__)
