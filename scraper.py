@@ -1,46 +1,33 @@
-from bs4 import BeautifulSoup
-import requests
-import os
-import boto3
-import json
+from scrapers.config import scrape_sites, base_urls
+from scrapers.base import Scraper
+from scrapers.capital import CapitalMedia
+from scrapers.the_star import StarMedia
+from scrapers.nation import NationMedia
 
-s3 = boto3.client(
-    's3',
-    aws_access_key_id=os.environ['MORPH_AWS_ACCESS_KEY'],
-    aws_secret_access_key=os.environ['MORPH_AWS_SECRET_KEY'],
-    region_name='eu-west-1'
-)
+'''
+ This file contains the instances\
+  of the scraper classes
+ It's the entry point\
+ to all scraping.
+'''
 
-res = requests.get("https://www.standardmedia.co.ke/business/category/19/business-news")
+'''
+Instances of all the classes.
+'''
 
-raw = res.content
+scraper = Scraper()
+capital = CapitalMedia()
+star = StarMedia()
+nation = NationMedia()
 
-html = BeautifulSoup(raw, 'html.parser')
+# scraps for the standard media site
+scraper.scrape(scrape_sites["standard"], base_urls["standard"])
 
-data = []
+# Scrapes the capitalfm site
+capital.scrape_page()
 
-base_url = "https://www.standardmedia.co.ke"
+# Scrapes the star site
+star.scrape_page()
 
-ul = html.find("ul", class_="business-lhs")
-
-items = ul.find_all("div", class_="col-xs-6")
-
-for item in items:
-    img_src = item.find("img").get("src")
-    img_url = base_url+img_src
-    text = item.find("h4").text
-    link = item.find("h4").find("a").get("href")
-    data.append({
-        'title':text,
-        'link':link,
-        'img':img_url
-        })
-
-s3.put_object(
-    Bucket='taxclock.codeforkenya.org',
-    ACL='public-read',
-    Key='data/standard-news.json',
-    Body=json.dumps(data)
-)
-
-print("ok")
+# Scrapes the nation media site.
+nation.scrape_page()
