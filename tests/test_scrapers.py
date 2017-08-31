@@ -19,8 +19,13 @@ class ScraperTest(unittest.TestCase):
         self.the_star = StarMedia()
 
     def test_get_html_content(self):
-        """This method tests that the get\
-         html content works well."""
+        """Gets the content of webpage.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the page html content      
+        """
 
         result_html = self.scraper.get_html_content(
             scrape_sites["standard"])
@@ -28,8 +33,13 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(data)
 
     def test_nationmedia_scraper(self):
-        """This method tests the scraper\
-        for nation media."""
+        """Tests the scraper for nation media.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title.
+        """
 
         result_html = self.scraper.get_html_content(
             scrape_sites["nation"])
@@ -38,8 +48,13 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(items)
 
     def test_standardmedia_scraper(self):
-        """This method tests the scraper\
-        for standard media."""
+        """Tests the scraper for standard media.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title.
+        """
 
         result_html = self.scraper.get_html_content(
             scrape_sites["standard"])
@@ -48,8 +63,13 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(items)
 
     def test_the_star_scraper(self):
-        """This method tests the scraper\
-        for the star."""
+        """Tests the scraper for the star.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title.
+        """
 
         result_html = self.scraper.get_html_content(
             scrape_sites["the_star"])
@@ -58,8 +78,12 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(items)
 
     def test_capitalfm(self):
-        """This method tests the scraper\
-        for capitalfm."""
+        """Tests the scraper for capitalfm.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title."""
 
         result_html = self.scraper.get_html_content(
             scrape_sites["capital"])
@@ -67,7 +91,12 @@ class ScraperTest(unittest.TestCase):
         self.assertTrue(items)
 
     def test_pagination(self):
-        """Tests that the page has pagination."""
+        """Tests the pagination links.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the urls of all pages in the site."""
         urls = self.the_star.pagination()
         self.assertTrue(urls)
 
