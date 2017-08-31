@@ -1,5 +1,4 @@
 import boto3
-import json
 import logging
 import requests
 
@@ -27,8 +26,13 @@ class Scraper(object):
         })
 
     def get_html_content(self, url):
-        """This method returns the entire\
-         html content of a page."""
+        """Returns the html content,\
+            a soup object.
+        Usage::
+            pass the site url to the method.
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title.
+        """
 
         try:
             res = requests.get(url)
@@ -39,36 +43,3 @@ class Scraper(object):
             print "Url is not reachable. Error logged on: {}".format(
                 strftime("%Y-%m-%d %H:%M:%S", gmtime()))
             log.info(str(err))
-
-    def scrape(self, url, base_url):
-        """
-        This method is used as a sraper for\
-        the website url's that are passed to it.In\
-        this case the standard media urls'.
-        """
-        result_html = self.get_html_content(url)
-        data = []
-        if result_html:
-            ul = result_html.find("ul", class_="business-lhs")
-            items = ul.find_all("div", class_="col-xs-6")
-            for item in items:
-                img_src = item.find("img").get("src")
-                if img_src:
-                    img_url = base_url + img_src
-                img_url = "https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png"
-                text = item.find("h4").text
-                link = item.find("h4").find("a").get("href")
-                data.append({
-                    'title': text,
-                    'link': link,
-                    'img': img_url
-                })
-            print (json.dumps(data, indent=2))
-            self.s3.put_object(
-                Bucket='taxclock.codeforkenya.org',
-                ACL='public-read',
-                Key='data/standard-news.json',
-                Body=json.dumps(data))
-            return result_html
-        else:
-            log.info("The ideal html content could not be retrieved.")
