@@ -14,10 +14,14 @@ class NationMedia(Scraper):
         self.base = Scraper()
 
     def scrape_page(self):
-        """this method scrapes data from\
-        http://www.nation.co.ke/business/corporates/\
-        1954162-1954162-u0riql/index.html"""
-
+        """Scrapes stories from nation media.
+        Usage::
+              use the class object
+              pass the site url to\
+              get_html_content method.
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title.
+        """
         result_html = self.base.get_html_content(self.url)
         if result_html:
             data = []
