@@ -15,8 +15,13 @@ class StarMedia(Scraper):
         self.base = Scraper()
 
     def scrape_page(self):
-        """this method scrapes data from\
-        http://www.the-star.co.ke/sections/business_c29663
+        """Scrapes stories from star media.
+        Usage::
+              create the class object
+              using the object call the  url to\
+              get_html_content method.
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title.
         """
         urls = []
         if self.pagination():
@@ -50,19 +55,28 @@ class StarMedia(Scraper):
             )
             return result_html
         else:
-            log.info("The ideal html content could not be retrieved.")
+            log.info("The html content could not be retrieved.")
 
     def pagination(self):
-        """this method gets the urls for the pages\
-         in the star website. It returns the urls\
-          for the pages"""
+        """Gets pages links from the star.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the urls of all pages in the site.
+        """
 
         result_html = self.base.get_html_content(self.url)
         if result_html:
             ul = result_html.find("ul", class_="pager")
-            items = ul.find_all("li", class_="pager__item")
-            urls = []
-            for links in items[1:]:
-                link = base_urls["the_star"] + links.find("a").get("href")
-                urls.append(link)
-            return urls
+            if ul:
+                items = ul.find_all("li", class_="pager__item")
+                urls = []
+                for links in items[1:]:
+                    link = base_urls["the_star"] + links.find("a").get("href")
+                    urls.append(link)
+                    return urls
+            else:
+                print "Pagination links could not be retrieved."
+        else:
+            log.info("The html content for the pages could not be retrieved.")

@@ -15,8 +15,12 @@ class CapitalMedia(Scraper):
         self.base = Scraper()
 
     def scrape_page(self):
-        """This method scrapes data from capitalfm site\
-        http://www.capitalfm.co.ke/business/section/kenya/
+        """Scrapes stories from capitalfm media.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
+        :rtype: the stories image,link, title.
         """
         result_html = self.base.get_html_content(self.url)
         if result_html:
