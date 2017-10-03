@@ -1,9 +1,9 @@
-from scrapers.capital import CapitalMedia
-from scrapers.the_star import StarMedia
-from scrapers.nation import NationMedia
-from scrapers.standard import StandardMedia
+from taxclock.scrapers.capital import CapitalMedia
+from taxclock.scrapers.the_star import StarMedia
+from taxclock.scrapers.nation import NationMedia
+from taxclock.scrapers.standard import StandardMedia
 
-
+import json
 '''
 Instances of all the classes.
 '''
@@ -13,6 +13,9 @@ capital = CapitalMedia()
 star = StarMedia()
 nation = NationMedia()
 
+
+# Scrapes the nation media site.
+nation.scrape_page()
 # scraps for the standard media site
 standard.scrape_page()
 
@@ -21,6 +24,3 @@ capital.scrape_page()
 
 # Scrapes the star site
 star.scrape_page()
-
-# Scrapes the nation media site.
-nation.scrape_page()
