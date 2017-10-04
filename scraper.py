@@ -1,7 +1,8 @@
-from scrapers.capital import CapitalMedia
-from scrapers.the_star import StarMedia
-from scrapers.nation import NationMedia
-from scrapers.standard import StandardMedia
+from taxclock.scrapers.capital import CapitalMedia
+from taxclock.scrapers.the_star import StarMedia
+from taxclock.scrapers.nation import NationMedia
+from taxclock.scrapers.standard import StandardMedia
+from taxclock.scrapers.base import Scraper
 
 
 '''
@@ -13,14 +14,17 @@ capital = CapitalMedia()
 star = StarMedia()
 nation = NationMedia()
 
-# scraps for the standard media site
-standard.scrape_page()
 
-# Scrapes the capitalfm site
-capital.scrape_page()
+# Scrapers for the media websites.
+nation_news = nation.scrape_page()
+standard_news = standard.scrape_page()
+capital_news = capital.scrape_page()
+star_news = star.scrape_page()
 
-# Scrapes the star site
-star.scrape_page()
-
-# Scrapes the nation media site.
-nation.scrape_page()
+try:
+    all_news = nation_news + standard_news +\
+        capital_news + star_news
+    scraper = Scraper()
+    scraper.aws_store(all_news[:7])    
+except Exception as err:
+	print(err)
