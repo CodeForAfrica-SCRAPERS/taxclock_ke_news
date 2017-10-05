@@ -1,46 +1,30 @@
-from bs4 import BeautifulSoup
-import requests
-import os
-import boto3
-import json
+import logging
 
-s3 = boto3.client(
-    's3',
-    aws_access_key_id=os.environ['MORPH_AWS_ACCESS_KEY'],
-    aws_secret_access_key=os.environ['MORPH_AWS_SECRET_KEY'],
-    region_name='eu-west-1'
-)
+#from taxclock.settings import LOG_FILE
 
-res = requests.get("https://www.standardmedia.co.ke/business/category/19/business-news")
+from taxclock.scrapers.capital import CapitalMedia
+from taxclock.scrapers.the_star import StarMedia
+from taxclock.scrapers.nation import NationMedia
+from taxclock.scrapers.standard import StandardMedia
 
-raw = res.content
 
-html = BeautifulSoup(raw, 'html.parser')
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 
-data = []
 
-base_url = "https://www.standardmedia.co.ke"
+'''
+Intialize scraper classes
+'''
+standard = StandardMedia()
+capital = CapitalMedia()
+star = StarMedia()
+nation = NationMedia()
 
-ul = html.find("ul", class_="business-lhs")
 
-items = ul.find_all("div", class_="col-xs-6")
-
-for item in items:
-    img_src = item.find("img").get("src")
-    img_url = base_url+img_src
-    text = item.find("h4").text
-    link = item.find("h4").find("a").get("href")
-    data.append({
-        'title':text,
-        'link':link,
-        'img':img_url
-        })
-
-s3.put_object(
-    Bucket='taxclock.codeforkenya.org',
-    ACL='public-read',
-    Key='data/standard-news.json',
-    Body=json.dumps(data)
-)
-
-print("ok")
+'''
+Run the scrapers
+'''
+nation.scrape_page()
+standard.scrape_page()
+capital.scrape_page()
+star.scrape_page()
