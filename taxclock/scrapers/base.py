@@ -1,13 +1,13 @@
-import os
 import boto3
 import logging
 import requests
 import json
 
 from bs4 import BeautifulSoup
-from taxclock.config import AWS, log_file
 
-logging.basicConfig(filename=log_file['log_file'], level=logging.INFO)
+from taxclock import settings as env
+
+
 log = logging.getLogger(__name__)
 
 
@@ -18,10 +18,11 @@ class Scraper(object):
 
     def __init__(self):
         self.url = None
+        # TODO: Move S3 configuration to another file
         self.s3 = boto3.client('s3', **{
-            'aws_access_key_id': AWS['aws_access_key_id'],
-            'aws_secret_access_key': AWS['aws_secret_access_key'],
-            'region_name': AWS['region_name']
+            'aws_access_key_id': env.AWS_ACCESS_KEY,
+            'aws_secret_access_key': env.AWS_SECRET_KEY,
+            'region_name': env.AWS_REGION
         })
 
     def get_html_content(self, url):
@@ -47,18 +48,18 @@ class Scraper(object):
         :param_train_data: the filename
         :rtype: outputs data to a file.
         '''
-        with open(os.path.dirname(__file__) + '/data/' +
-                  site_name + '.json', 'w') as output_file:
+        with open(env.DATA_DIR + site_name + '.json', 'w') as output_file:
             json.dump(data, output_file, indent=2)
 
     def aws_store(self, data, site_name):
-        '''Writes the data to AWS.
+        '''Writes the data to AWS S3.
         Usage::
-            writes data to aws.
+            writes data to AWS S3.
 
         '''
         try:
             self.s3.put_object(
+                # TODO: Pull bucket from settings
                 Bucket='taxclock.codeforkenya.org',
                 ACL='public-read',
                 Key='data/' + site_name + '.json',

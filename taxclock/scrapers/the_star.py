@@ -1,9 +1,10 @@
 import logging
 
 from base import Scraper
-from taxclock.config import scrape_sites, base_urls, log_file
 
-logging.basicConfig(filename=log_file['log_file'], level=logging.INFO)
+from taxclock.settings import scrape_sites, base_urls
+
+
 log = logging.getLogger(__name__)
 
 
@@ -39,7 +40,8 @@ class StarMedia(Scraper):
                 for item in items:
                     img_url = item.find('img').get('src')
                     if not img_url:
-                        img_url = 'https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png'
+                        img_url = 'https://github.com/CodeForAfrica/TaxClock/\
+                                    blob/kenya/img/placeholder.png'
                     text = item.find('img').get('title')
                     link = base_urls['the_star'] + item.find('a').get('href')
                     data.append({
@@ -50,7 +52,7 @@ class StarMedia(Scraper):
                 self.aws_store(data, 'thestar-news')
             except Exception as err:
                 log.error(str(err))
-            return data    
+            return data
         else:
             log.error(result)
 

@@ -1,10 +1,9 @@
-import json
 import logging
 
 from base import Scraper
-from taxclock.config import scrape_sites, base_urls, log_file
+from taxclock.settings import scrape_sites, base_urls
 
-logging.basicConfig(filename=log_file['log_file'], level=logging.INFO)
+
 log = logging.getLogger(__name__)
 
 
@@ -34,7 +33,8 @@ class NationMedia(Scraper):
                     if img_src:
                         img_url = base_urls['nation'] + img_src
                     else:
-                        img_url = 'https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png'
+                        img_url = 'https://github.com/CodeForAfrica/TaxClock/\
+                                    blob/kenya/img/placeholder.png'
                     link = base_urls['nation'] + item.find('a').get('href')
                     text = item.find('img').get('alt')
                     data.append({
@@ -42,9 +42,9 @@ class NationMedia(Scraper):
                         'img': img_url,
                         'title': text
                     })
-                self.base.aws_store(data, 'nation-news')  
+                self.base.aws_store(data, 'nation-news')
             except Exception as err:
                 log.error(str(err))
-            return data    
+            return data
         else:
             log.error(result)

@@ -1,5 +1,5 @@
 from taxclock.tests import BaseTest
-from taxclock.config import scrape_sites
+from taxclock.settings import scrape_sites
 
 
 class ScraperTests(BaseTest):
