@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-<<<<<<< HEAD
+
 # Distribution / packaging
 .Python
 build/
@@ -42,15 +42,6 @@ venv.bak/
 
 # Local directories
 data/
-	
-
-=======
->>>>>>> 66091670799142d996b0050bbcec1be4c87c25a3
 *.pyc
-data/
 *.DS_Store
-taxclock.log
-<<<<<<< HEAD
 
-=======
->>>>>>> 66091670799142d996b0050bbcec1be4c87c25a3
