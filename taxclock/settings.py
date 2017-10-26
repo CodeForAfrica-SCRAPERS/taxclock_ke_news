@@ -42,4 +42,4 @@ IMG_PLACEHOLDER = 'https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/\
                     placeholder.png'
 
 # timeout for the url request.
-TIMEOUT = os.getenv('MORPH_TAXCLOCK_TIMEOUT', 30)
+TIMEOUT_TIME = os.getenv('MORPH_TAXCLOCK_TIMEOUT', 30)

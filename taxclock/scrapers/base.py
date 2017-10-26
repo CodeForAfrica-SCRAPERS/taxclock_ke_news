@@ -3,11 +3,10 @@ import boto3
 import logging
 import requests
 import json
-import pytz
+
 
 from bs4 import BeautifulSoup
 from dateutil.parser import parse
-from datetime import datetime
 
 from taxclock import settings as env
 
@@ -37,7 +36,7 @@ class Scraper(object):
         '''
 
         try:
-            res = requests.get(url, timeout=int(env.TIMEOUT))
+            res = requests.get(url, timeout=int(env.TIMEOUT_TIME))
             html = BeautifulSoup(res.content, 'html.parser')
             return html
 
