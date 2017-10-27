@@ -31,7 +31,7 @@ class ScraperTests(BaseTest):
         result_html = self.scraper.get_html_content(
             scrape_sites['nation'])
         items = result_html.find_all(
-            'div', class_='story-teaser medium-teaser')
+            'div', class_='story-teaser top-teaser')
         self.assertTrue(items)
 
     def test_standardmedia_scraper(self):
@@ -131,3 +131,12 @@ class ScraperTests(BaseTest):
         '''
         nation_data = self.nation.scrape_page()
         self.assertTrue(nation_data)
+
+    def test_sort_data(self):
+        '''Tests data is sorted by date
+        Usage::
+            the method accepts data
+        :rtype: It returns sorted data.
+        '''
+        the_star_data = self.the_star.scrape_page()
+        self.assertTrue(self.scraper.sort_data_by_date(the_star_data))

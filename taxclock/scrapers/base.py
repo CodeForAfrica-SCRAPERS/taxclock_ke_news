@@ -1,9 +1,12 @@
+import os
 import boto3
 import logging
 import requests
 import json
 
+
 from bs4 import BeautifulSoup
+from dateutil.parser import parse
 
 from taxclock import settings as env
 
@@ -18,7 +21,6 @@ class Scraper(object):
 
     def __init__(self):
         self.url = None
-        # TODO: Move S3 configuration to another file
         self.s3 = boto3.client('s3', **{
             'aws_access_key_id': env.AWS_ACCESS_KEY,
             'aws_secret_access_key': env.AWS_SECRET_KEY,
@@ -34,36 +36,50 @@ class Scraper(object):
         '''
 
         try:
-            res = requests.get(url)
+            res = requests.get(url, timeout=int(env.TIMEOUT_TIME))
             html = BeautifulSoup(res.content, 'html.parser')
             return html
 
         except Exception as err:
             log.error(str(err))
 
-    def local_store(self, data, site_name):
+    def local_store(self, data):
         '''Writes content from the website to file.
         Usage::
              file name to write data
         :param_train_data: the filename
         :rtype: outputs data to a file.
         '''
-        with open(env.DATA_DIR + site_name + '.json', 'w') as output_file:
+
+        with open(os.path.dirname(__file__) +
+                  '/data/news.json', 'w') as output_file:
+            # writes data to the output file.
             json.dump(data, output_file, indent=2)
 
-    def aws_store(self, data, site_name):
-        '''Writes the data to AWS S3.
-        Usage::
-            writes data to AWS S3.
-
+    def aws_store(self, data):
+        '''Writes the data to AWS.
         '''
-        try:
-            self.s3.put_object(
-                # TODO: Pull bucket from settings
-                Bucket='taxclock.codeforkenya.org',
-                ACL='public-read',
-                Key='data/' + site_name + '.json',
-                Body=json.dumps(data))
-        except Exception as err:
-            self.local_store(data, site_name)
-            log.error(str(err))
+        if data:
+            data = self.sort_data_by_date(data)
+            try:
+                self.s3.put_object(
+                    Bucket=env.AWS_S3_BUCKET,
+                    ACL='public-read',
+                    Key='data/news.json',
+                    Body=json.dumps(data[:7]))
+            except Exception as err:
+                self.local_store(data[:7])
+                log.info(str(err))
+        else:
+            log.error('No data to save')
+
+    def sort_data_by_date(self, data):
+        '''Sorts data by date.
+        Usage::
+            Pass the data to sort.
+        :rtype: outputs the sorted data.
+        '''
+        if not data:
+            log.info('No data was found for sorting.')
+        return sorted(data, key=lambda k: parse(k['date_published']),
+                      reverse=True)

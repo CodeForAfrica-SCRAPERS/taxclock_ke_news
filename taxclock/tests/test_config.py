@@ -1,7 +1,7 @@
 import unittest
 import requests
 
-from taxclock.config import scrape_sites, base_urls
+from taxclock.settings import scrape_sites, base_urls
 
 
 class ConfigTest(unittest.TestCase):

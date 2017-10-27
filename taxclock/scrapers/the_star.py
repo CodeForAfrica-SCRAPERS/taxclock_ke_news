@@ -1,8 +1,7 @@
 import logging
 
 from base import Scraper
-
-from taxclock.settings import scrape_sites, base_urls
+from taxclock.settings import scrape_sites, base_urls, IMG_PLACEHOLDER
 
 
 log = logging.getLogger(__name__)
@@ -24,14 +23,7 @@ class StarMedia(Scraper):
         :param_train_data: the url of the site
         :rtype: the stories image,link, title.
         '''
-        urls = []
-        if self.pagination():
-            urls = self.pagination()
-            for url in urls:
-                result = self.base.get_html_content(url)
-            result
-        else:
-            result = self.base.get_html_content(self.url)
+        result = self.base.get_html_content(self.url)
         if result:
             try:
                 data = []
@@ -40,21 +32,22 @@ class StarMedia(Scraper):
                 for item in items:
                     img_url = item.find('img').get('src')
                     if not img_url:
-                        img_url = 'https://github.com/CodeForAfrica/TaxClock/\
-                                    blob/kenya/img/placeholder.png'
-                    text = item.find('img').get('title')
+                        img_url = IMG_PLACEHOLDER
                     link = base_urls['the_star'] + item.find('a').get('href')
+                    get_data = self.base.get_html_content(link)
+                    text = get_data.find('h1').text
+                    date = get_data.find('time').text
                     data.append({
                         'link': link,
                         'img': img_url,
-                        'title': text
+                        'title': text,
+                        'date_published': date
                     })
-                self.aws_store(data, 'thestar-news')
             except Exception as err:
                 log.error(str(err))
             return data
         else:
-            log.error(result)
+            log.error(str(result))
 
     def pagination(self):
         '''Gets pages links from the star.
@@ -76,6 +69,6 @@ class StarMedia(Scraper):
                     urls.append(link)
                 return urls
             else:
-                log.error(ul)
+                log.error(str(ul))
         else:
-            log.error(result)
+            log.error(str(result))

@@ -40,3 +40,6 @@ DATA_DIR = os.path.dirname(__file__) + '/data/'
 # Placeholder image when none found on scrape
 IMG_PLACEHOLDER = 'https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/\
                     placeholder.png'
+
+# timeout for the url request.
+TIMEOUT_TIME = os.getenv('MORPH_TAXCLOCK_TIMEOUT', 30)
