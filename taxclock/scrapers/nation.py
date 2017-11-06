@@ -23,9 +23,7 @@ class NationMedia(Scraper):
 
     def scrape_page(self):
         '''Scrapes stories from nation media.
-
         Usage::
-
               use the class object
               pass the site url to\
               get_html_content method.

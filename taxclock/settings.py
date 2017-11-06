@@ -83,3 +83,4 @@ LOGGING = {
         'handlers': ['console', 'console_priority']
     }
 }
+

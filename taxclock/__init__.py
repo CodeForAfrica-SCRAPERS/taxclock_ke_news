@@ -1,6 +1,5 @@
 import logging
 
-
 from taxclock.settings import LOGGING, SLACK_WEBHOOK
 from slack_logger import SlackHandler, SlackFormatter
 

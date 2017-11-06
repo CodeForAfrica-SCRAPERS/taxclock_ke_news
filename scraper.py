@@ -3,6 +3,9 @@ from taxclock.scrapers.the_star import StarMedia
 from taxclock.scrapers.nation import NationMedia
 from taxclock.scrapers.standard import StandardMedia
 from taxclock.scrapers.base import Scraper
+from taxclock import set_logging
+
+log = set_logging()
 
 '''
 Intialize scraper classes
@@ -26,3 +29,4 @@ try:
     scraper.aws_store(all_news)
 except Exception as err:
     print(err)
+

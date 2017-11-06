@@ -18,7 +18,6 @@ class StarMedia(Scraper):
 
     def scrape_page(self):
         '''Scrapes stories from star media.
-
         Usage::
               create the class object
               using the object call the  url to\
@@ -55,7 +54,6 @@ class StarMedia(Scraper):
 
     def pagination(self):
         '''Gets pages links from the star.
-
         Usage::
               create the class object
               using the object call the method
@@ -75,3 +73,4 @@ class StarMedia(Scraper):
                 return urls
             else:
                 log.error(ul, extra={'notify_slack': True}, exc_info=True)
+                

@@ -10,7 +10,6 @@ log = set_logging()
 
 class CapitalMedia(Scraper):
     '''
-
     This is a capital scraper it gets data from capital website.
     '''
 
@@ -21,14 +20,11 @@ class CapitalMedia(Scraper):
 
     def scrape_page(self):
         '''Scrapes stories from capitalfm media.
-
         Usage::
               create the class object
               using the object call the method
         :param_train_data: the url of the site
-
         :rtype: the stories image,link, title.
-
         '''
         result = self.base.get_html_content(self.url)
         if result:
@@ -60,3 +56,4 @@ class CapitalMedia(Scraper):
             return data
         else:
             log.error(result)
+            

@@ -19,7 +19,6 @@ class StandardMedia(Scraper):
 
     def scrape_page(self):
         '''Scrapes stories from standard media.
-
         Usage::
               use the class object
               pass the site url to\
@@ -58,3 +57,4 @@ class StandardMedia(Scraper):
             return data
         else:
             log.error(result)
+            

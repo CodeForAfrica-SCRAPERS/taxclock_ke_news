@@ -29,14 +29,10 @@ class Scraper(object):
 
     def get_html_content(self, site_url):
         '''Returns a soup object.
-
         Usage::
-
             pass the site url to the method.
-
         :param_train_data: the url of the site
         :rtype: the stories image,link, title.
-
         '''
 
         try:
@@ -51,14 +47,10 @@ class Scraper(object):
 
     def local_store(self, data):
         '''Writes content from the website to file.
-
         Usage::
-
              file name to write data
-
         :param_train_data: the filename
         :rtype: outputs data to a file.
-
         '''
 
         with open(os.path.dirname(__file__) +
@@ -67,7 +59,6 @@ class Scraper(object):
 
     def aws_store(self, data):
         '''Writes the data to AWS.
-
         '''
         if data:
             data = self.sort_data_by_date(data)
@@ -87,15 +78,12 @@ class Scraper(object):
 
     def sort_data_by_date(self, data):
         '''Sorts data by date.
-
         Usage::
-
             Pass the data to sort.
-
         :rtype: outputs the sorted data.
-
         '''
         if not data:
             log.info('No data was found for sorting.')
         return sorted(data, key=lambda k: parse(k['date_published']),
                       reverse=True)
+        
