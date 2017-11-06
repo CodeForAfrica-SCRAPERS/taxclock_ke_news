@@ -1,14 +1,15 @@
-import logging
+from taxclock import set_logging
+from taxclock.scrapers.base import Scraper
+from taxclock.settings import scrape_sites, base_urls, IMG_PLACEHOLDER
 
 
-from base import Scraper
-from taxclock.config import scrape_sites, base_urls, log_file
-
-logging.basicConfig(filename=log_file['log_file'], level=logging.INFO)
-log = logging.getLogger(__name__)
+log = set_logging()
 
 
 class StarMedia(Scraper):
+    '''
+    This the star scraper that gets data from the star website.
+    '''
 
     def __init__(self):
         super(StarMedia, self).__init__()
@@ -17,6 +18,7 @@ class StarMedia(Scraper):
 
     def scrape_page(self):
         '''Scrapes stories from star media.
+
         Usage::
               create the class object
               using the object call the  url to\
@@ -33,7 +35,7 @@ class StarMedia(Scraper):
                 for item in items:
                     img_url = item.find('img').get('src')
                     if not img_url:
-                        img_url = 'https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png'
+                        img_url = IMG_PLACEHOLDER
                     link = base_urls['the_star'] + item.find('a').get('href')
                     get_data = self.base.get_html_content(link)
                     text = get_data.find('h1').text
@@ -45,15 +47,15 @@ class StarMedia(Scraper):
                         'date_published': date
                     })
             except Exception as err:
-                log.error(str(err) +
-                          ' :- ' + str(self.base.get_local_time()))
+
+                log.error(err, extra={'notify_slack': True}, exc_info=True)
             return data
         else:
-            log.error(result +
-                      ' :- ' + str(self.base.get_local_time()))
+            log.error(result)
 
     def pagination(self):
         '''Gets pages links from the star.
+
         Usage::
               create the class object
               using the object call the method
@@ -72,8 +74,4 @@ class StarMedia(Scraper):
                     urls.append(link)
                 return urls
             else:
-                log.error(ul +
-                          ' :- ' + str(self.base.get_local_time()))
-        else:
-            log.error(result +
-                      ' :- ' + str(self.base.get_local_time()))
+                log.error(ul, extra={'notify_slack': True}, exc_info=True)

@@ -1,13 +1,17 @@
-import logging
+from taxclock import set_logging
+from taxclock.scrapers.base import Scraper
+from taxclock.settings import scrape_sites, base_urls, IMG_PLACEHOLDER
 
-from base import Scraper
-from taxclock.config import scrape_sites, base_urls, log_file
 
-logging.basicConfig(filename=log_file['log_file'], level=logging.INFO)
-log = logging.getLogger(__name__)
+log = set_logging()
 
 
 class StandardMedia(Scraper):
+
+    '''
+    This is a starndard scraper that gets data from the standard website.
+    '''
+
     def __init__(self):
         super(StandardMedia, self).__init__()
         self.url = scrape_sites['standard']
@@ -15,6 +19,7 @@ class StandardMedia(Scraper):
 
     def scrape_page(self):
         '''Scrapes stories from standard media.
+
         Usage::
               use the class object
               pass the site url to\
@@ -23,7 +28,7 @@ class StandardMedia(Scraper):
         :rtype: the stories image,link, title.
         '''
 
-        result = self.get_html_content(self.url)
+        result = self.base.get_html_content(self.url)
         data = []
         if result:
             try:
@@ -34,15 +39,14 @@ class StandardMedia(Scraper):
                     if img_src:
                         img_url = base_urls['standard'] + img_src
                     else:
-                        img_url = 'https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/placeholder.png'
+                        img_url = IMG_PLACEHOLDER
                     text = item.find('h4').text
                     link = item.find('h4').find('a').get('href')
                     get_data = self.base.get_html_content(link)
                     date_content = get_data.find_all('span', class_='writer')
                     list_date = date_content[0:1]
                     get_text = list_date[0].get_text()
-                    encode = get_text.encode('ascii', 'ignore')
-                    date = encode.split(',')[1]
+                    date = get_text.split(',')[1]
                     data.append({
                         'title': text,
                         'link': link,
@@ -50,9 +54,7 @@ class StandardMedia(Scraper):
                         'date_published': date
                     })
             except Exception as err:
-                log.error(str(err) +
-                          ' :- ' + str(self.base.get_local_time()))
+                log.error(err, extra={'notify_slack': True}, exc_info=True)
             return data
         else:
-            log.info(result +
-                     ' :- ' + str(self.base.get_local_time()))
+            log.error(result)
