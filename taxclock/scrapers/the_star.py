@@ -1,13 +1,15 @@
-import logging
-
-from base import Scraper
+from taxclock import set_logging
+from taxclock.scrapers.base import Scraper
 from taxclock.settings import scrape_sites, base_urls, IMG_PLACEHOLDER
 
 
-log = logging.getLogger(__name__)
+log = set_logging()
 
 
 class StarMedia(Scraper):
+    '''
+    This the star scraper that gets data from the star website.
+    '''
 
     def __init__(self):
         super(StarMedia, self).__init__()
@@ -44,10 +46,11 @@ class StarMedia(Scraper):
                         'date_published': date
                     })
             except Exception as err:
-                log.error(str(err))
+
+                log.error(err, extra={'notify_slack': True}, exc_info=True)
             return data
         else:
-            log.error(str(result))
+            log.error(result)
 
     def pagination(self):
         '''Gets pages links from the star.
@@ -69,6 +72,5 @@ class StarMedia(Scraper):
                     urls.append(link)
                 return urls
             else:
-                log.error(str(ul))
-        else:
-            log.error(str(result))
+                log.error(ul, extra={'notify_slack': True}, exc_info=True)
+                

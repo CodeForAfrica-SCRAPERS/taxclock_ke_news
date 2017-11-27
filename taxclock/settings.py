@@ -43,3 +43,44 @@ IMG_PLACEHOLDER = 'https://github.com/CodeForAfrica/TaxClock/blob/kenya/img/\
 
 # timeout for the url request.
 TIMEOUT_TIME = os.getenv('MORPH_TAXCLOCK_TIMEOUT', 30)
+
+
+# webhook configuration.
+SLACK_WEBHOOK = os.getenv('MORPH_TAXCLOCK_SLACK_WEBHOOK')
+
+# slack formatting.
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'full': {
+            'format': '%(asctime)s %(name)-15s %(levelname)-8s %(message)s',
+            }
+
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+            'stream': 'ext://sys.stdout',
+            'formatters': 'simple'
+        },
+        'console_priority': {
+                   'class': 'logging.StreamHandler',
+                   'formatter': 'full',
+                   'level': 'ERROR',
+                   'stream': 'ext://sys.stderr'
+                   }
+              },
+    'root': {
+        'level': 'INFO',
+        'handlers': ['console', 'console_priority']
+    }
+}
+

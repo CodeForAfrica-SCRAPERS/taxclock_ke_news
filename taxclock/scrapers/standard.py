@@ -1,13 +1,17 @@
-import logging
-
-from base import Scraper
+from taxclock import set_logging
+from taxclock.scrapers.base import Scraper
 from taxclock.settings import scrape_sites, base_urls, IMG_PLACEHOLDER
 
 
-log = logging.getLogger(__name__)
+log = set_logging()
 
 
 class StandardMedia(Scraper):
+
+    '''
+    This is a starndard scraper that gets data from the standard website.
+    '''
+
     def __init__(self):
         super(StandardMedia, self).__init__()
         self.url = scrape_sites['standard']
@@ -41,8 +45,7 @@ class StandardMedia(Scraper):
                     date_content = get_data.find_all('span', class_='writer')
                     list_date = date_content[0:1]
                     get_text = list_date[0].get_text()
-                    encode = get_text.encode('ascii', 'ignore')
-                    date = encode.split(',')[1]
+                    date = get_text.split(',')[1]
                     data.append({
                         'title': text,
                         'link': link,
@@ -50,7 +53,8 @@ class StandardMedia(Scraper):
                         'date_published': date
                     })
             except Exception as err:
-                log.error(str(err))
+                log.error(err, extra={'notify_slack': True}, exc_info=True)
             return data
         else:
-            log.info(str(result))
+            log.error(result)
+            

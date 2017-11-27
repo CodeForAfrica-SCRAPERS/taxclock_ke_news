@@ -1,14 +1,21 @@
-import json
+from taxclock import set_logging
+from taxclock.scrapers.base import Scraper
+
 import logging
 
-from base import Scraper
+
 from taxclock.settings import scrape_sites, base_urls, IMG_PLACEHOLDER
 
 
-log = logging.getLogger(__name__)
+log = set_logging()
 
 
 class NationMedia(Scraper):
+
+    '''
+    This is a nation class that scrapes data from nation website.
+    '''
+
     def __init__(self):
         super(NationMedia, self).__init__()
         self.url = scrape_sites['nation']
@@ -46,7 +53,7 @@ class NationMedia(Scraper):
                         'date_published': date
                     })
             except Exception as err:
-                log.error(str(err))
+                log.error(err, extra={'notify_slack': True}, exc_info=True)
             return data
         else:
-            log.error(str(result))
+            log.error(result)

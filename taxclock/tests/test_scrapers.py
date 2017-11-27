@@ -140,3 +140,4 @@ class ScraperTests(BaseTest):
         '''
         the_star_data = self.the_star.scrape_page()
         self.assertTrue(self.scraper.sort_data_by_date(the_star_data))
+        

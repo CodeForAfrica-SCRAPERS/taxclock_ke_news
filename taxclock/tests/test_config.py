@@ -8,7 +8,8 @@ class ConfigTest(unittest.TestCase):
 
     def test_sites_url(self):
         '''Tests whether all the\
-        site url's are working.'''
+        site url's are working.
+        '''
 
         for keys in scrape_sites.keys():
             resp = requests.get(scrape_sites[keys])
@@ -16,7 +17,8 @@ class ConfigTest(unittest.TestCase):
 
     def test_base_url(self):
         '''Tests whether all the \
-        base url's  are working.'''
+        base url's  are working.
+        '''
 
         for keys in base_urls.keys():
             resp = requests.get(base_urls[keys])

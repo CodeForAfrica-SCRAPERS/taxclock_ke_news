@@ -1,18 +1,18 @@
-import logging
 import re
 
-from base import Scraper
+from taxclock import set_logging
+from taxclock.scrapers.base import Scraper
 from taxclock.settings import scrape_sites, IMG_PLACEHOLDER
 
 
-log = logging.getLogger(__name__)
+log = set_logging()
 
 
 class CapitalMedia(Scraper):
-
-    '''This is the capital media scraper that gets data from\
-    capital website.
     '''
+    This is a capital scraper it gets data from capital website.
+    '''
+
     def __init__(self):
         super(CapitalMedia, self).__init__()
         self.url = scrape_sites['capital']
@@ -20,6 +20,10 @@ class CapitalMedia(Scraper):
 
     def scrape_page(self):
         '''Scrapes stories from capitalfm media.
+        Usage::
+              create the class object
+              using the object call the method
+        :param_train_data: the url of the site
         :rtype: the stories image,link, title.
         '''
         result = self.base.get_html_content(self.url)
@@ -31,13 +35,13 @@ class CapitalMedia(Scraper):
                     img_url = item.find('img').get('src')
                     if not img_url:
                         img_url = IMG_PLACEHOLDER
-                    link = item.find('a').get('href').encode('ascii', 'ignore')
+                    link = item.find('a').get('href')
                     text = item.find('h2').text
                     get_data = self.base.get_html_content(link)
                     date_content = get_data.find("strong").text
-                    date_string = date_content.encode('ascii', 'ignore')
+                    date_string = date_content,
                     reg_exp = re.match(
-                        '^(\w+)(\W+)(\w+)(\W+)(\w+)(\W+)(\d+)', date_string)
+                        '^(\w+)(\W+)(\w+)(\W+)(\w+)(\W+)(\d+)', str(date_string))
                     result_value = reg_exp.groups(
                     )[4], ' ', reg_exp.groups()[6]
                     date = ''.join(result_value)
@@ -48,7 +52,8 @@ class CapitalMedia(Scraper):
                         'date_published': date
                     })
             except Exception as err:
-                log.error(str(err))
+                log.error(err, extra={'notify_slack': True}, exc_info=True)
             return data
         else:
             log.error(result)
+            
